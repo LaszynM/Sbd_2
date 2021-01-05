@@ -1,8 +1,14 @@
 package com.mlaszyn;
 
-public class BTree {
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Serializable;
+
+public class BTree implements Serializable{
     private int d;
     private Node root;
+    public int kolor = 1;
 
 
     public BTree(int d) {
@@ -12,6 +18,17 @@ public class BTree {
         root.setNumber(0);
         root.setLeaf(true);
 
+    }
+
+    public void insertIntoFile(int key, String value) {
+        try {
+            File file = new File("Values.txt");
+            FileWriter fr = new FileWriter(file, true);
+            fr.write(key+";"+value+"\n");
+            fr.close();
+        } catch (IOException io) {
+            System.out.println("File error!!! Can't write value to file");
+        }
     }
 
     private Node searchNodes(Node node, int key) {
@@ -50,6 +67,9 @@ public class BTree {
         }
         for (int i = 0; i < d; i++)
             node3.key[i] = temp[d+i+1];
+        for (int i = 0; i < d; i++)
+            node2.key[i] = temp[i];
+
         node2.setNumber(d);
         node3.setNumber(d);
 //        for (int i = 0; i < d; i++) {
@@ -74,7 +94,7 @@ public class BTree {
 
     public int Compensate(Node node, int cIndex, int key) {
         if (cIndex > 0) {
-            if (node.child[cIndex-1].getNumber() < 2d) {
+            if (node.child[cIndex-1].getNumber() < 2*d) {
                 //node.child[cIndex-1].key[node.child[cIndex-1].getNumber()] = node.key[cIndex];
 
                 int temp[] = new int[4 * d + 1];
@@ -87,7 +107,7 @@ public class BTree {
                 j++;
                 int k = 0;
                 boolean isKey = false;
-                for (int i = 0; i < 2d + 1; i++) {
+                for (int i = 0; i < 2*d + 1; i++) {
                     if (key < node.child[cIndex].key[k] && isKey == false) {
                         temp[j] = key;
                         j++;
@@ -108,17 +128,19 @@ public class BTree {
                 node.child[cIndex-1].setNumber(j);
                 for(int i = j-1; i >= 0; i--) {
                     node.child[cIndex-1].key[i] = temp[j-1];
+                    j--;
                 }
                 return 1;
             }
             else{}
         }
         if (cIndex < 2*d+1) {
-            if (node.child[cIndex+1] != null && node.child[cIndex+1].getNumber() < 2d) {
+            if (node.child[cIndex+1] != null && node.child[cIndex+1].getNumber() < 2*d) {
                 int temp[] = new int[4 * d + 1];
                 int j = 0, k = 0;
                 boolean isKey = false;
-                for(int i = 0; i < 2d + 1; i++) {
+                for(int i = 0; i < 2*
+                        d + 1; i++) {
                     if(key < node.child[cIndex].key[k] && isKey == false) {
                         temp[j] = key;
                         j++;
@@ -153,8 +175,14 @@ public class BTree {
         return 0;
     }
 
-    public void Insert(final int key) {
+    public void Insert(final int key, String v) {
         Node r = root;
+        Node f = searchNodes(r, key);
+        if(f != null) {
+            System.out.println("Klucz juz istnieje");
+            return;
+        }
+        insertIntoFile(key, v);
         if(r.getNumber() == 2*d) {
             Node newNode = new Node(d);
             root = newNode;
@@ -166,6 +194,20 @@ public class BTree {
         }
         else
             insertValue(r, key);
+    }
+
+    public void DeleteValue(final int key) {
+        Node r = root;
+        Node f = searchNodes(r, key);
+        if (f == null) {
+            System.out.println("Key: " + key + " not found.");
+            return;
+        }
+        if(r.getIsLeaf() == true) {
+     //       for (int i = 0; i < r.getNumber(); i++)
+    //            if(key == r.key[i])
+
+        }
     }
 
     private final void insertValue(Node node, int k) {
@@ -183,17 +225,18 @@ public class BTree {
             i++;
             Node tmp = node.child[i];
             int comp = 0;
-            if(tmp.getIsLeaf() == true && tmp.getNumber()<= 2 * d)
-                insertValue(node.child[i], k);
 
-            else if (tmp.getNumber() == 2 * d && tmp.getNumber() == 2 * d) {
-                if (Compensate(node, i, k) == 0)
-                Split(node, i, tmp, k);
-                if (k > node.key[i]) {
-                    i++;
-                }
+
+
+            if(tmp.getIsLeaf() == true && tmp.getNumber() == 2 * d) {
+                comp = Compensate(node, i, k);
+                if (comp == 0)
+                    Split(node, i, tmp, k);
             }
-            else(comp == 0)
+            else if (tmp.getNumber() == 2 * d) {
+                Split(node, i, tmp, k);
+            }
+            else
                 insertValue(node.child[i], k);
         }
 
@@ -223,8 +266,9 @@ public class BTree {
     public void ShowNode(Node node, int c) {
         assert (node == null);
         for(int i = 0; i < node.getNumber(); i++) {
-            System.out.print(node.key[i] + " : " + c + "\n");
+            System.out.print(node.key[i] + " : " + c + ":K:"+ c +  "\n");
         }
+        System.out.println(" ");
         if(node.getIsLeaf() == false) {
             for (int i = 0; i < node.getNumber() + 1; i++) {
                 ShowNode(node.child[i], c+1);

@@ -1,6 +1,7 @@
 package com.mlaszyn;
+import java.io.Serializable;
 
-public class Node{
+public class Node implements Serializable{
     private int d;
     private int number;
     private String value;
