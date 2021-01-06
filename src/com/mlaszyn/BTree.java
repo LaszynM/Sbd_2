@@ -1,31 +1,218 @@
 package com.mlaszyn;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 
 public class BTree implements Serializable{
     private int d;
+    public int nodeNumber = 0;
     private Node root;
     public int kolor = 1;
 
 
     public BTree(int d) {
         this.d = d;
-        root = new Node(d);
+        nodeNumber++;
+        root = new Node(d, nodeNumber);
         root.setD(d);
         root.setNumber(0);
         root.setLeaf(true);
 
     }
 
-    public void insertIntoFile(int key, String value) {
+    public void reorganizeFiles(Node node1, Node node2, Node node3, String valueToInsert, int keyToInsert) {
         try {
-            File file = new File("Values.txt");
+            File temp1 = new File("tmp1.txt");
+            File temp2 = new File("tmp2.txt");
+            File temp3 = new File("tmp3.txt");
+
+            temp1.createNewFile();
+            temp2.createNewFile();
+            temp3.createNewFile();
+
+            String currentLine;
+            String sub;
+            int foundKey;
+            BufferedWriter bw1 = new BufferedWriter(new FileWriter(temp1));
+            BufferedWriter bw2 = new BufferedWriter(new FileWriter(temp2));
+            BufferedWriter bw3 = new BufferedWriter(new FileWriter(temp3));
+
+            File node1File = new File(node1.getFileName());
+            BufferedReader br1 = new BufferedReader(new FileReader(node1File));
+            while((currentLine = br1.readLine()) != null) {
+                sub = currentLine.substring(0, currentLine.indexOf(":"));
+                foundKey = Integer.parseInt(sub);
+                for (int i = 0; i < 2*d; i++) {
+                    if (node1.getNumber() > i) {
+                        if (node1.key[i] == foundKey) {
+                            bw1.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                    if (node2.getNumber() > i) {
+                        if (node2.key[i] == foundKey) {
+                            bw2.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                    if (node3.getNumber() > i) {
+                        if (node3.key[i] == foundKey) {
+                            bw3.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                }
+            }
+            br1.close();
+
+            File node2File = new File(node2.getFileName());
+            BufferedReader br2 = new BufferedReader(new FileReader(node2File));
+            while((currentLine = br2.readLine()) != null) {
+                sub = currentLine.substring(0, currentLine.indexOf(":"));
+                foundKey = Integer.parseInt(sub);
+                for (int i = 0; i < 2*d; i++) {
+                    if (node1.getNumber() > i) {
+                        if (node1.key[i] == foundKey) {
+                            bw1.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                    if (node2.getNumber() > i) {
+                        if (node2.key[i] == foundKey) {
+                            bw2.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                    if (node3.getNumber() > i) {
+                        if (node3.key[i] == foundKey) {
+                            bw3.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                }
+            }
+            br2.close();
+
+            File node3File = new File(node3.getFileName());
+            BufferedReader br3 = new BufferedReader(new FileReader(node3File));
+            while((currentLine = br3.readLine()) != null) {
+                sub = currentLine.substring(0, currentLine.indexOf(":"));
+                foundKey = Integer.parseInt(sub);
+                for (int i = 0; i < 2*d; i++) {
+                    if (node1.getNumber() > i) {
+                        if (node1.key[i] == foundKey) {
+                            bw1.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                    if (node2.getNumber() > i) {
+                        if (node2.key[i] == foundKey) {
+                            bw2.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                    if (node3.getNumber() > i) {
+                        if (node3.key[i] == foundKey) {
+                            bw3.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < 2*d; i++) {
+                if (node1.getNumber() > i) {
+                    if (node1.key[i] == keyToInsert) {
+                        bw1.write(keyToInsert + ":" + valueToInsert + System.getProperty("line.separator"));
+                        break;
+                    }
+                }
+                if (node2.getNumber() > i) {
+                    if (node2.key[i] == keyToInsert) {
+                        bw2.write(keyToInsert + ":" + valueToInsert + System.getProperty("line.separator"));
+                        break;
+                    }
+                }
+                if (node3.getNumber() > i) {
+                    if (node3.key[i] == keyToInsert) {
+                        bw3.write(keyToInsert + ":" + valueToInsert + System.getProperty("line.separator"));
+                        break;
+                    }
+                }
+            }
+
+            br3.close();
+
+            bw1.close();
+            bw2.close();
+            bw3.close();
+
+            node1File.delete();
+            boolean success = temp1.renameTo(node1File);
+            node2File.delete();
+            success = temp2.renameTo(node2File);
+            node3File.delete();
+            success = temp3.renameTo(node3File);
+
+            System.out.println(success);
+
+        } catch (IOException io) {
+            System.out.println("Something's wrong");
+        }
+    }
+
+    public void insertIntoFile(int key, String value, String fileName) {
+        try {
+            File file = new File(fileName);
             FileWriter fr = new FileWriter(file, true);
-            fr.write(key+";"+value+"\n");
+            fr.write(key+":"+value+"\n");
             fr.close();
+        } catch (IOException io) {
+            System.out.println("File error!!! Can't write value to file");
+        }
+    }
+
+    public String readValue(int key, String fileName) {
+        try {
+            File file = new File(fileName);
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String currentLine;
+            while((currentLine = br.readLine()) != null) {
+                if(currentLine.startsWith(key+":")) {
+                    String val = currentLine.substring(currentLine.indexOf(":")+1);
+                    br.close();
+                    return val;
+                }
+            }
+            br.close();
+            return null;
+        } catch (IOException io) {
+            System.out.println("Can't find file");
+        }
+        return null;
+    }
+
+    public void readAllValues(String fileName, String[] tab) {
+
+    }
+
+    public void removeFromFile(int key, String fileName) {
+        try {
+            File file = new File(fileName);
+            File filetmp = new File("tmp.txt");
+            //file.createNewFile();
+            filetmp.createNewFile();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(filetmp));
+            String currentLine;
+            while((currentLine = br.readLine()) != null) {
+                if(currentLine.startsWith(key+":"))
+                    continue;
+                bw.write(currentLine + System.getProperty("line.separator"));
+
+            }
+            bw.close();
+            br.close();
+            file.delete();
+            boolean success = filetmp.renameTo(file);
         } catch (IOException io) {
             System.out.println("File error!!! Can't write value to file");
         }
@@ -50,8 +237,9 @@ public class BTree implements Serializable{
         }
     }
 
-    private void Split(Node node, int pos, Node node2, int key) {
-        Node node3 = new Node(d);
+    private void Split(Node node, int pos, Node node2, int key, String value) {
+        nodeNumber++;
+        Node node3 = new Node(d, nodeNumber);
         node3.setLeaf(node2.getIsLeaf());
         node3.setNumber(d);
         int temp[] = new int[2*d+1];
@@ -90,9 +278,10 @@ public class BTree implements Serializable{
         }
         node.key[pos] = temp[d];
         node.setNumber(node.getNumber()+1);
+        reorganizeFiles(node, node2, node3, value, key);
     }
 
-    public int Compensate(Node node, int cIndex, int key) {
+    public int Compensate(Node node, int cIndex, int key, String value) {
         if (cIndex > 0) {
             if (node.child[cIndex-1].getNumber() < 2*d) {
                 //node.child[cIndex-1].key[node.child[cIndex-1].getNumber()] = node.key[cIndex];
@@ -130,6 +319,7 @@ public class BTree implements Serializable{
                     node.child[cIndex-1].key[i] = temp[j-1];
                     j--;
                 }
+                reorganizeFiles(node, node.child[cIndex-1], node.child[cIndex], value, key);
                 return 1;
             }
             else{}
@@ -168,6 +358,7 @@ public class BTree implements Serializable{
                 for(int i = j-1; i >= 0; i--) {
                     node.child[cIndex].key[i] = temp[j-1];
                 }
+                reorganizeFiles(node, node.child[cIndex], node.child[cIndex+1], value, key);
                 return 1;
             }
             else{}
@@ -182,18 +373,18 @@ public class BTree implements Serializable{
             System.out.println("Klucz juz istnieje");
             return;
         }
-        insertIntoFile(key, v);
         if(r.getNumber() == 2*d) {
-            Node newNode = new Node(d);
+            nodeNumber++;
+            Node newNode = new Node(d, nodeNumber);
             root = newNode;
             newNode.setLeaf(false);
             newNode.setNumber(0);
             newNode.child[0] = r;
-            Split(newNode,0, r, key);
+            Split(newNode,0, r, key, v);
             //insertValue(newNode, key);
         }
         else
-            insertValue(r, key);
+            insertValue(r, key, v);
     }
 
     public void DeleteValue(final int key) {
@@ -210,7 +401,18 @@ public class BTree implements Serializable{
         }
     }
 
-    private final void insertValue(Node node, int k) {
+    public void UpdateValue(int key, String value) {
+        Node r = root;
+        Node f = searchNodes(r, key);
+        if (f != null) {
+            removeFromFile(key, f.getFileName());
+            insertIntoFile(key, value, f.getFileName());
+            return;
+        }
+        System.out.println("Key not found");
+    }
+
+    private final void insertValue(Node node, int k, String v) {
         if(node.getIsLeaf() == true) {
             int i = 0;
             for (i = node.getNumber() - 1; i >= 0 && k < node.key[i]; i--) {
@@ -218,6 +420,7 @@ public class BTree implements Serializable{
             }
             node.key[i+1] = k;
             node.setNumber(node.getNumber()+1);
+            insertIntoFile(k, v, node.getFileName());
         } else {
             int i = 0;
             for (i = node.getNumber() - 1; i >= 0 && k < node.key[i]; i--) {
@@ -225,19 +428,16 @@ public class BTree implements Serializable{
             i++;
             Node tmp = node.child[i];
             int comp = 0;
-
-
-
             if(tmp.getIsLeaf() == true && tmp.getNumber() == 2 * d) {
-                comp = Compensate(node, i, k);
+                comp = Compensate(node, i, k, v);
                 if (comp == 0)
-                    Split(node, i, tmp, k);
+                    Split(node, i, tmp, k, v);
             }
             else if (tmp.getNumber() == 2 * d) {
-                Split(node, i, tmp, k);
+                Split(node, i, tmp, k, v);
             }
             else
-                insertValue(node.child[i], k);
+                insertValue(node.child[i], k, v);
         }
 
     }
@@ -266,7 +466,13 @@ public class BTree implements Serializable{
     public void ShowNode(Node node, int c) {
         assert (node == null);
         for(int i = 0; i < node.getNumber(); i++) {
-            System.out.print(node.key[i] + " : " + c + ":K:"+ c +  "\n");
+            System.out.println(node.key[i] + " : " + ":K:"+ c + " " + readValue(node.key[i], node.getFileName()) +   "\n");
+        }
+        if (node.getIsLeaf() != true) {
+            System.out.print("Children: ");
+            for (int i = 0; i < node.getNumber() + 1; i++) {
+                System.out.print(node.child[i].getFileName() + " ");
+            }
         }
         System.out.println(" ");
         if(node.getIsLeaf() == false) {

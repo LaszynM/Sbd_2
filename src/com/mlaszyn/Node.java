@@ -1,17 +1,28 @@
 package com.mlaszyn;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
-public class Node implements Serializable{
+public class Node implements Serializable {
     private int d;
     private int number;
-    private String value;
+    private String fileName;
     private boolean isLeaf;
     int size;
     int key[];
     Node child[];
 
 
-    public Node(int d) {
+    public Node(int d, int id) {
+        fileName = "Node"+id+".txt";
+        try {
+            File old = new File(fileName);
+            old.delete();
+            File file = new File(fileName);
+            file.createNewFile();
+        } catch (IOException io) {
+            System.out.println("Error creating node file");
+        }
         this.d = d;
         size = 2*d;
         key = new int[size];
@@ -20,12 +31,12 @@ public class Node implements Serializable{
     }
 
     public int getNumber() { return(number); }
-    public String getValue() { return(value); }
+    public String getFileName() { return(fileName); }
     public boolean getIsLeaf() { return(isLeaf); }
 
     public void setD(int d) { this.d = d; }
     public void setNumber(int number) { this.number = number; }
-    public void setValue(String value) { this.value = value; }
+    //public void setValue(String value) { this.value = value; }
     public void setLeaf(boolean isLeaf) { this.isLeaf = isLeaf; }
 
 

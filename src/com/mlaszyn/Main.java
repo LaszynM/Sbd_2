@@ -1,73 +1,13 @@
 package com.mlaszyn;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
-        //System.out.println("test");
-        BTree b = new BTree(2);
-        b.Insert(8, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(9, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(10, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(11, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(15, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(4, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(31, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(7, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(23, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(13, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(22, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(12, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(20, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(17, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(14, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(13, "asdsf");
-        b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(18, "asdsf");
 
-        b.Show();
-        System.out.println("-------------------------------");
-        System.out.println("-------------------------------");
+        Menu menu = new Menu();
+        //menu.startMenu();
 
         /*
         try {
@@ -96,4 +36,6 @@ public class Main {
 
          */
     }
+
+
 }
