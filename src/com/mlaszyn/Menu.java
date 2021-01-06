@@ -102,9 +102,22 @@ public class Menu {
 
         b.Show();
 
-        b.UpdateValue(13, "pouiyuyuhu");
+        b.UpdateValue(13, "pouiyuyuhkdsgbhjsbghkasnu");
 
         b.Show();
+
+        try {
+            FileOutputStream f = new FileOutputStream(new File("BTree3.txt"));
+            ObjectOutputStream o = new ObjectOutputStream(f);
+            o.writeObject(b);
+
+            o.close();
+            f.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("Error initializing stream");
+        }
     }
 
     public void readTreeFromFile() {
@@ -118,7 +131,7 @@ public class Menu {
             System.out.println("2: Update value at target key");
             System.out.println("3: Delete key");
             System.out.println("4: Show tree");
-            System.out.println("5: Exit program");
+            System.out.println("5: Back");
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 String name = reader.readLine();
@@ -167,7 +180,7 @@ public class Menu {
             System.out.println("2: Update value at target key");
             System.out.println("3: Delete key");
             System.out.println("4: Show tree");
-            System.out.println("5: Exit program");
+            System.out.println("5: Back");
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 String name = reader.readLine();
@@ -194,7 +207,7 @@ public class Menu {
                     System.out.println("Work in progress");
                 }
                 else if (name.equals("4")) {
-                    System.out.println("Work in progress");
+                    b.Show();
                 }
                 else if (name.equals("5")) {
                     return;

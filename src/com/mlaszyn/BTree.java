@@ -7,6 +7,8 @@ public class BTree implements Serializable{
     public int nodeNumber = 0;
     private Node root;
     public int kolor = 1;
+    public int readCount;
+    public int writeCount;
 
 
     public BTree(int d, int start) {
@@ -16,7 +18,8 @@ public class BTree implements Serializable{
         root.setD(d);
         root.setNumber(0);
         root.setLeaf(true);
-
+        readCount = 0;
+        writeCount = 0;
     }
 
     public void reorganizeFiles(Node node1, Node node2, Node node3, String valueToInsert, int keyToInsert) {
@@ -24,10 +27,10 @@ public class BTree implements Serializable{
             File temp1 = new File("tmp1.txt");
             File temp2 = new File("tmp2.txt");
             File temp3 = new File("tmp3.txt");
-
             temp1.createNewFile();
             temp2.createNewFile();
             temp3.createNewFile();
+            readCount++;
 
             String currentLine;
             String sub;
@@ -142,8 +145,11 @@ public class BTree implements Serializable{
             br3.close();
 
             bw1.close();
+            writeCount++;
             bw2.close();
+            writeCount++;
             bw3.close();
+            writeCount++;
 
             node1File.delete();
             boolean success = temp1.renameTo(node1File);
@@ -152,8 +158,6 @@ public class BTree implements Serializable{
             node3File.delete();
             success = temp3.renameTo(node3File);
 
-            //System.out.println(success);
-
         } catch (IOException io) {
             System.out.println("Something's wrong");
         }
@@ -161,6 +165,7 @@ public class BTree implements Serializable{
 
     public void insertIntoFile(int key, String value, String fileName) {
         try {
+            writeCount++;
             File file = new File(fileName);
             FileWriter fr = new FileWriter(file, true);
             fr.write(key+":"+value+"\n");
@@ -222,6 +227,7 @@ public class BTree implements Serializable{
         if (node == null)
             return node;
         int i;
+        readCount++;
         for (i = 0; i < node.getNumber(); i++) {
             if (key < node.key[i]) {
                 break;
@@ -248,7 +254,8 @@ public class BTree implements Serializable{
             if(i >= 2*d || (ins == false && node2.key[i] > key)) {
                 temp[j] = key;
                 ins = true;
-            } else {
+            } else
+        {
                 temp[j] = node2.key[i];
                 i++;
             }
@@ -260,9 +267,6 @@ public class BTree implements Serializable{
 
         node2.setNumber(d);
         node3.setNumber(d);
-//        for (int i = 0; i < d; i++) {
-//            node3.key[i] = node2.key[d+i];
-//        }
         if (node2.getIsLeaf() == false) {
             for (int i = 0; i < d+1; i++) {
                 node3.child[i] = node2.child[d+i];
@@ -284,7 +288,6 @@ public class BTree implements Serializable{
     public int Compensate(Node node, int cIndex, int key, String value) {
         if (cIndex > 0) {
             if (node.child[cIndex-1].getNumber() < 2*d) {
-                //node.child[cIndex-1].key[node.child[cIndex-1].getNumber()] = node.key[cIndex];
 
                 int temp[] = new int[4 * d + 1];
                 int j = 0;
@@ -367,6 +370,8 @@ public class BTree implements Serializable{
     }
 
     public void Insert(final int key, String v) {
+        readCount = 0;
+        writeCount = 0;
         Node r = root;
         Node f = searchNodes(r, key);
         if(f != null) {
@@ -402,14 +407,17 @@ public class BTree implements Serializable{
     }
 
     public void UpdateValue(int key, String value) {
+        readCount = 0;
+        writeCount = 0;
         Node r = root;
         Node f = searchNodes(r, key);
         if (f != null) {
             removeFromFile(key, f.getFileName());
             insertIntoFile(key, value, f.getFileName());
             return;
-        }
-        System.out.println("Key not found");
+        }else
+            System.out.println("Key not found");
+
     }
 
     private final void insertValue(Node node, int k, String v) {
@@ -442,25 +450,10 @@ public class BTree implements Serializable{
 
     }
 
-
-
-    /*public void Insert(int key) {
-        int num = root.getNumber();
-        if (num == 0) {
-            root.key[0] = key;
-            root.setNumber(1);
-            return;
-        }
-        else if (root.getIsLeaf() == true) {
-            if (num < 2*d)
-                insertValue(root, key);
-            else
-        }
-    }
-
-     */
     public void Show() {
         ShowNode(root, 1);
+        System.out.println("Last operation read count: "+ readCount);
+        System.out.println("Last operation write count: "+ writeCount);
         System.out.println("|------------------------------------------|");
     }
 
