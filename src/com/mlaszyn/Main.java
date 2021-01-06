@@ -8,7 +8,7 @@ public class Main {
 
         Menu menu = new Menu();
         //menu.startMenu();
-
+        menu.testing();
         /*
         try {
             FileOutputStream f =  new FileOutputStream(new File("Dzewo.txt"));

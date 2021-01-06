@@ -9,9 +9,9 @@ public class BTree implements Serializable{
     public int kolor = 1;
 
 
-    public BTree(int d) {
+    public BTree(int d, int start) {
         this.d = d;
-        nodeNumber++;
+        nodeNumber = start + 1;
         root = new Node(d, nodeNumber);
         root.setD(d);
         root.setNumber(0);
@@ -152,7 +152,7 @@ public class BTree implements Serializable{
             node3File.delete();
             success = temp3.renameTo(node3File);
 
-            System.out.println(success);
+            //System.out.println(success);
 
         } catch (IOException io) {
             System.out.println("Something's wrong");
@@ -461,20 +461,26 @@ public class BTree implements Serializable{
      */
     public void Show() {
         ShowNode(root, 1);
+        System.out.println("|------------------------------------------|");
     }
 
     public void ShowNode(Node node, int c) {
         assert (node == null);
+
+        System.out.println("Node file: "+node.getFileName());
         for(int i = 0; i < node.getNumber(); i++) {
-            System.out.println(node.key[i] + " : " + ":K:"+ c + " " + readValue(node.key[i], node.getFileName()) +   "\n");
+            System.out.print("Key: " + node.key[i] + " " + "Value:" + readValue(node.key[i], node.getFileName()) +   "\n");
         }
+        System.out.println("Height from root:"+c);
         if (node.getIsLeaf() != true) {
             System.out.print("Children: ");
             for (int i = 0; i < node.getNumber() + 1; i++) {
                 System.out.print(node.child[i].getFileName() + " ");
             }
         }
-        System.out.println(" ");
+        else
+            System.out.print("Leaf");
+        System.out.println("\n");
         if(node.getIsLeaf() == false) {
             for (int i = 0; i < node.getNumber() + 1; i++) {
                 ShowNode(node.child[i], c+1);

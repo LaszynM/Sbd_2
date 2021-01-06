@@ -65,62 +65,46 @@ public class Menu {
     }
 
     public void testing() {
-        BTree b = new BTree(2);
-        b.Insert(8, "asdsf");
+        BTree b = new BTree(2, 100);
+        b.Insert(8, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(9, "asdsf");
+        b.Insert(9, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(10, "asdsf");
+        b.Insert(10, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(11, "asdsf");
+        b.Insert(11, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(15, "asdsf");
+        b.Insert(15, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(4, "asdsf");
+        b.Insert(4, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(31, "asdsf");
+        b.Insert(31, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(7, "asdsf");
+        b.Insert(7, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(23, "asdsf");
+        b.Insert(23, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(13, "asdsf");
+        b.Insert(13, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(22, "asdsf");
+        b.Insert(22, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(12, "asdsf");
+        b.Insert(12, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(20, "asdsf");
+        b.Insert(20, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(17, "asdsf");
+        b.Insert(17, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(14, "asdsf");
+        b.Insert(14, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(13, "asdsf");
+        b.Insert(13, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        System.out.println("-------------------------------");
-        b.Insert(18, "asdsf");
+        b.Insert(18, "asdsfalksfhsohaggudhguanvjmnso");
 
         b.Show();
-        System.out.println("-------------------------------");
-        System.out.println("-------------------------------");
 
         b.UpdateValue(13, "pouiyuyuhu");
+
+        b.Show();
     }
 
     public void readTreeFromFile() {
@@ -174,7 +158,7 @@ public class Menu {
     }
 
     public void startTreeFromScratch() {
-        BTree b = new BTree(2);
+        BTree b = new BTree(2, 0);
         String tName = "BTree.txt";
         while(true) {
             System.out.println("Read tree from file");
