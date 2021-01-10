@@ -1,6 +1,7 @@
 package com.mlaszyn;
 
 import java.io.*;
+import java.util.Random;
 
 public class Menu {
     public Menu(){}
@@ -66,6 +67,7 @@ public class Menu {
 
     public void testing() {
         BTree b = new BTree(2, 100);
+        /*
         b.Insert(8, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
         b.Insert(9, "asdsfalksfhsohaggudhguanvjmnso");
@@ -105,12 +107,20 @@ public class Menu {
         b.UpdateValue(13, "pouiyuyuhkdsgbhjsbghkasnu");
 
         b.Show();
-
+*/
+        Random rand = new Random(); //instance of random class
+        int upperbound = 1000;
+        for (int i = 0; i < 50; i ++) {
+            int int_random = rand.nextInt(upperbound);
+            b.Insert(int_random, "asdsfalksfhsohaggudhguanvjmnso");
+            b.Show();
+        }
+        b.Show();
+/*
         try {
             FileOutputStream f = new FileOutputStream(new File("BTree3.txt"));
             ObjectOutputStream o = new ObjectOutputStream(f);
             o.writeObject(b);
-
             o.close();
             f.close();
         } catch (FileNotFoundException e) {
@@ -118,6 +128,8 @@ public class Menu {
         } catch (IOException e) {
             System.out.println("Error initializing stream");
         }
+
+ */
     }
 
     public void readTreeFromFile() {

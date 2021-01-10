@@ -11,9 +11,10 @@ public class Node implements Serializable {
     int size;
     int key[];
     Node child[];
+    Node parent;
 
 
-    public Node(int d, int id) {
+    public Node(int d, int id, Node parent) {
         fileName = "Node"+id+".txt";
         try {
             File old = new File(fileName);
@@ -28,6 +29,7 @@ public class Node implements Serializable {
         key = new int[size];
         child = new Node[2*d+1];
         isLeaf = true;
+        this.parent = parent;
     }
 
     public int getNumber() { return(number); }

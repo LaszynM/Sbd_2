@@ -14,7 +14,7 @@ public class BTree implements Serializable{
     public BTree(int d, int start) {
         this.d = d;
         nodeNumber = start + 1;
-        root = new Node(d, nodeNumber);
+        root = new Node(d, nodeNumber, null);
         root.setD(d);
         root.setNumber(0);
         root.setLeaf(true);
@@ -242,7 +242,7 @@ public class BTree implements Serializable{
             return searchNodes(node.child[i], key);
         }
     }
-
+/*
     private void Split(Node node, int pos, Node node2, int key, String value) {
         nodeNumber++;
         Node node3 = new Node(d, nodeNumber);
@@ -285,6 +285,169 @@ public class BTree implements Serializable{
         reorganizeFiles(node, node2, node3, value, key);
     }
 
+ */
+    public void Split2(Node node, int key) {
+
+        nodeNumber++;
+        Node newNode = new Node(d, nodeNumber, node.parent);
+        newNode.setLeaf(true);
+        newNode.setNumber(d);
+        boolean ins = false;
+        int temp[] = new int[2 * d + 1];
+        for(int i = 0, j = 0; j < 2*d+1; j++) {
+            if(i >= 2*d || (ins == false && node.key[i] > key)) {
+                temp[j] = key;
+                ins = true;
+            } else
+            {
+                temp[j] = node.key[i];
+                i++;
+            }
+        }
+        for (int i = 0; i < d; i++) {
+            node.key[i] = temp[i];
+            newNode.key[i] = temp[d+i+1];
+        }
+        node.setNumber(d);
+        SplitParent(node.parent, temp[d], newNode);
+    }
+
+
+    public void SplitParent(Node node, int key, Node newChild) {
+        if(node.getNumber() < 2*d) {
+            int j;
+            for(j = node.getNumber(); j > 0; j--) {
+                if(key > node.key[j-1]) {
+                    break;
+                    //node.key[j] = key;
+                    //node.setNumber(node.getNumber()+1);
+                    //node.child[j+1] = newChild;
+                } else {
+                    node.key[j] = node.key[j-1];
+                    node.child[j+1] = node.child[j];
+                }
+                node.key[j] = key;
+                node.setNumber(node.getNumber()+1);
+                node.child[j+1] = newChild;
+            }
+        } else if (node.parent == null) {
+            //nowy root
+            nodeNumber++;
+            Node newR = new Node(d, nodeNumber, null);
+            newR.setLeaf(false);
+            node.parent = newR;
+            root = newR;
+            newR.child[0] = node;
+            newR.setNumber(1);
+            //nowy somsiad
+            nodeNumber++;
+            Node newSib = new Node(d, nodeNumber, newR);
+            newR.child[1] = newSib;
+
+            int temp[] = new int[2*d+1];
+            Node tempNode[] = new Node[2*d+2];
+            boolean ins = false;
+            tempNode[0] = node.child[0];
+
+            for(int i = 0, j = 0; j < 2*d+1; j++) {
+                if(i >= 2*d || (ins == false && node.key[i] > key)) {
+                    temp[j] = key;
+                    tempNode[j+1] = newChild;
+                    ins = true;
+                } else
+                {
+                    temp[j] = node.key[i];
+                    tempNode[j+1] = node.child[i+1];
+                    i++;
+                }
+            }
+
+            for (int i = 0; i < d; i++) {
+                node.key[i] = temp[i];
+                newSib.key[i] = temp[d+i+1];
+            }
+            newR.key[0] = temp[d];
+            for (int i = 0; i <=d; i++) {
+                node.child[i] = tempNode[i];
+                newSib.child[i] = tempNode[i+d+1];
+            }
+            newSib.setLeaf(false);
+            node.setNumber(d);
+            newSib.setNumber(d);
+
+        } else {
+            nodeNumber++;
+            Node newSib = new Node(d, nodeNumber, node.parent);
+            int temp[] = new int[2*d+1];
+            Node tempNode[] = new Node[2*d+2];
+            boolean ins = false;
+
+            tempNode[0] = node.child[0];
+            for(int i = 0, j = 0; j < 2*d+1; j++) {
+                if(i >= 2*d || (ins == false && node.key[i] > key)) {
+                    temp[j] = key;
+                    tempNode[j+1] = newChild;
+                    ins = true;
+                } else
+                {
+                    temp[j] = node.key[i];
+                    tempNode[j+1] = node.child[i+1];
+                    i++;
+                }
+            }
+
+            for (int i = 0; i < d; i++) {
+                node.key[i] = temp[i];
+                newSib.key[i] = temp[d+i+1];
+            }
+            //newR.key[0] = temp[d];
+            for (int i = 0; i <=d; i++) {
+                node.child[i] = tempNode[i];
+                newSib.child[i] = tempNode[i+d+1];
+            }
+            newSib.setLeaf(false);
+            node.setNumber(d);
+            newSib.setNumber(d);
+            SplitParent(node.parent, temp[d], newSib);
+        }
+    }
+
+
+    public void SplitRoot(Node node, int key) {
+        nodeNumber++;
+        Node newR = new Node(d, nodeNumber, null);
+        newR.setNumber(1);
+        newR.child[0] = node;
+        newR.setLeaf(false);
+        node.parent = newR;
+        root = newR;
+        nodeNumber++;
+        Node newSib = new Node(d, nodeNumber, newR);
+        newSib.setNumber(d);
+        node.setNumber(d);
+        newR.child[1] = newSib;
+        int temp[] = new int[2*d+1];
+        boolean ins = false;
+
+        for(int i = 0, j = 0; j < 2*d+1; j++) {
+            if(i >= 2*d || (ins == false && node.key[i] > key)) {
+                temp[j] = key;
+                ins = true;
+            } else
+            {
+                temp[j] = node.key[i];
+                i++;
+            }
+        }
+
+        for (int i = 0; i < d; i++) {
+            node.key[i] = temp[i];
+            newSib.key[i] = temp[d+i+1];
+        }
+        newR.key[0] = temp[d];
+    }
+
+
     public int Compensate(Node node, int cIndex, int key, String value) {
         if (cIndex > 0) {
             if (node.child[cIndex-1].getNumber() < 2*d) {
@@ -300,7 +463,11 @@ public class BTree implements Serializable{
                 int k = 0;
                 boolean isKey = false;
                 for (int i = 0; i < 2*d + 1; i++) {
-                    if (key < node.child[cIndex].key[k] && isKey == false) {
+                    if(k == 2*d && isKey == false) {
+                       temp[j] = key;
+                        j++;
+                        isKey = true;
+                    }else if (key < node.child[cIndex].key[k] && isKey == false) {
                         temp[j] = key;
                         j++;
                         isKey = true;
@@ -322,7 +489,7 @@ public class BTree implements Serializable{
                     node.child[cIndex-1].key[i] = temp[j-1];
                     j--;
                 }
-                reorganizeFiles(node, node.child[cIndex-1], node.child[cIndex], value, key);
+                //reorganizeFiles(node, node.child[cIndex-1], node.child[cIndex], value, key);
                 return 1;
             }
             else{}
@@ -332,9 +499,12 @@ public class BTree implements Serializable{
                 int temp[] = new int[4 * d + 1];
                 int j = 0, k = 0;
                 boolean isKey = false;
-                for(int i = 0; i < 2*
-                        d + 1; i++) {
-                    if(key < node.child[cIndex].key[k] && isKey == false) {
+                for(int i = 0; i < 2*d + 1; i++) {
+                    if(k == 2*d && isKey == false) {
+                        temp[j] = key;
+                        j++;
+                        isKey = true;
+                    }else if(key < node.child[cIndex].key[k] && isKey == false) {
                         temp[j] = key;
                         j++;
                         isKey = true;
@@ -360,6 +530,7 @@ public class BTree implements Serializable{
                 node.child[cIndex].setNumber(j);
                 for(int i = j-1; i >= 0; i--) {
                     node.child[cIndex].key[i] = temp[j-1];
+                    j--;
                 }
                 reorganizeFiles(node, node.child[cIndex], node.child[cIndex+1], value, key);
                 return 1;
@@ -369,28 +540,37 @@ public class BTree implements Serializable{
         return 0;
     }
 
+
     public void Insert(final int key, String v) {
         readCount = 0;
         writeCount = 0;
+        System.out.println("Inserting: "+key);
         Node r = root;
         Node f = searchNodes(r, key);
         if(f != null) {
-            System.out.println("Klucz juz istnieje");
+            System.out.println("Key already exists");
             return;
         }
-        if(r.getNumber() == 2*d) {
+        if(r.getNumber() == 2*d && r.getIsLeaf() == true)
+            SplitRoot(r, key);
+        //if(r.getNumber() == 2*d) {
+
+            /*
             nodeNumber++;
             Node newNode = new Node(d, nodeNumber);
             root = newNode;
             newNode.setLeaf(false);
             newNode.setNumber(0);
             newNode.child[0] = r;
-            Split(newNode,0, r, key, v);
+
+            */
+//            Split(newNode,0, r, key, v);
             //insertValue(newNode, key);
-        }
+        //}
         else
             insertValue(r, key, v);
     }
+
 
     public void DeleteValue(final int key) {
         Node r = root;
@@ -421,15 +601,19 @@ public class BTree implements Serializable{
     }
 
     private final void insertValue(Node node, int k, String v) {
-        if(node.getIsLeaf() == true) {
+        if(node.getNumber() < 2*d && node.getIsLeaf() == true) {
             int i = 0;
             for (i = node.getNumber() - 1; i >= 0 && k < node.key[i]; i--) {
                 node.key[i+1] = node.key[i];
             }
             node.key[i+1] = k;
             node.setNumber(node.getNumber()+1);
-            insertIntoFile(k, v, node.getFileName());
-        } else {
+            //insertIntoFile(k, v, node.getFileName());
+        } else if (node.getIsLeaf() == true) {
+
+        }
+
+        else {
             int i = 0;
             for (i = node.getNumber() - 1; i >= 0 && k < node.key[i]; i--) {
             }
@@ -439,10 +623,11 @@ public class BTree implements Serializable{
             if(tmp.getIsLeaf() == true && tmp.getNumber() == 2 * d) {
                 comp = Compensate(node, i, k, v);
                 if (comp == 0)
-                    Split(node, i, tmp, k, v);
+                    System.out.print(" ");
+  //                  Split(node, i, tmp, k, v);
             }
             else if (tmp.getNumber() == 2 * d) {
-                Split(node, i, tmp, k, v);
+ //               Split(node, i, tmp, k, v);
             }
             else
                 insertValue(node.child[i], k, v);
