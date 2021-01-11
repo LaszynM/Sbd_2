@@ -22,6 +22,109 @@ public class BTree implements Serializable{
         writeCount = 0;
     }
 
+
+    public String reorganizeTwoFiles(Node node1, Node node2, int keyToInsert, String valueToInsert, int keyToExtract) {
+        try {
+            File temp1 = new File("tmp1.txt");
+            File temp2 = new File("tmp2.txt");
+            temp1.createNewFile();
+            temp2.createNewFile();
+            String currentLine;
+            String sub;
+            String valueFound = null;
+            int foundKey;
+            BufferedWriter bw1 = new BufferedWriter(new FileWriter(temp1));
+            BufferedWriter bw2 = new BufferedWriter(new FileWriter(temp2));
+
+            File node1File = new File(node1.getFileName());
+            BufferedReader br1 = new BufferedReader(new FileReader(node1File));
+
+            while((currentLine = br1.readLine()) != null) {
+                sub = currentLine.substring(0, currentLine.indexOf(":"));
+                foundKey = Integer.parseInt(sub);
+                if(foundKey == keyToExtract) {
+                    valueFound = currentLine.substring(currentLine.indexOf(":")+1);
+                    continue;
+                }
+                for (int i = 0; i < 2*d; i++) {
+                    if (node1.getNumber() > i) {
+                        if (node1.key[i] == foundKey) {
+                            bw1.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                    if (node2.getNumber() > i) {
+                        if (node2.key[i] == foundKey) {
+                            bw2.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+
+                }
+            }
+            br1.close();
+
+            File node2File = new File(node2.getFileName());
+            BufferedReader br2 = new BufferedReader(new FileReader(node2File));
+            while((currentLine = br2.readLine()) != null) {
+                sub = currentLine.substring(0, currentLine.indexOf(":"));
+                foundKey = Integer.parseInt(sub);
+                if(foundKey == keyToExtract) {
+                    valueFound = currentLine.substring(currentLine.indexOf(":")+1);
+                    continue;
+                }
+                for (int i = 0; i < 2*d; i++) {
+                    if (node1.getNumber() > i) {
+                        if (node1.key[i] == foundKey) {
+                            bw1.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                    if (node2.getNumber() > i) {
+                        if (node2.key[i] == foundKey) {
+                            bw2.write(currentLine + System.getProperty("line.separator"));
+                            break;
+                        }
+                    }
+                }
+            }
+            br2.close();
+            for (int i = 0; i < 2*d; i++) {
+                if(keyToInsert == keyToExtract) {
+                    valueFound = valueToInsert;
+                    break;
+                }
+                if (node1.getNumber() > i) {
+                    if (node1.key[i] == keyToInsert) {
+                        bw1.write(keyToInsert + ":" + valueToInsert + System.getProperty("line.separator"));
+                        break;
+                    }
+                }
+                if (node2.getNumber() > i) {
+                    if (node2.key[i] == keyToInsert) {
+                        bw2.write(keyToInsert + ":" + valueToInsert + System.getProperty("line.separator"));
+                        break;
+                    }
+                }
+            }
+            bw1.close();
+            writeCount++;
+            bw2.close();
+            writeCount++;
+
+            node1File.delete();
+            boolean success = temp1.renameTo(node1File);
+            node2File.delete();
+            success = temp2.renameTo(node2File);
+
+            return valueFound;
+        } catch (IOException io) {
+            System.out.println("Something's wrong");
+            return null;
+        }
+    }
+
+
     public void reorganizeFiles(Node node1, Node node2, Node node3, String valueToInsert, int keyToInsert) {
         try {
             File temp1 = new File("tmp1.txt");
@@ -286,7 +389,7 @@ public class BTree implements Serializable{
     }
 
  */
-    public void Split2(Node node, int key) {
+    public void Split2(Node node, int key, String value) {
 
         nodeNumber++;
         Node newNode = new Node(d, nodeNumber, node.parent);
@@ -309,11 +412,12 @@ public class BTree implements Serializable{
             newNode.key[i] = temp[d+i+1];
         }
         node.setNumber(d);
-        SplitParent(node.parent, temp[d], newNode);
+        String v = reorganizeTwoFiles(node, newNode, key, value, temp[d]);
+        SplitParent(node.parent, temp[d], newNode, v);
     }
 
 
-    public void SplitParent(Node node, int key, Node newChild) {
+    public void SplitParent(Node node, int key, Node newChild, String value) {
         if(node.getNumber() < 2*d) {
             int j;
             for(j = node.getNumber(); j > 0; j--) {
@@ -330,6 +434,8 @@ public class BTree implements Serializable{
             node.key[j] = key;
             node.setNumber(node.getNumber()+1);
             node.child[j+1] = newChild;
+            insertIntoFile(key, value, node.getFileName());
+            //reorganizeFiles(node, node.child[j], node.child[j+1], value, key);
         } else if (node.parent == null) {
             //nowy root
             nodeNumber++;
@@ -376,6 +482,7 @@ public class BTree implements Serializable{
             newSib.setLeaf(false);
             node.setNumber(d);
             newSib.setNumber(d);
+            reorganizeFiles(newR, node, newSib, value, key);
 
         } else {
             nodeNumber++;
@@ -411,12 +518,13 @@ public class BTree implements Serializable{
             newSib.setLeaf(false);
             node.setNumber(d);
             newSib.setNumber(d);
-            SplitParent(node.parent, temp[d], newSib);
+            String v = reorganizeTwoFiles(node, newSib, key, value, temp[d]);
+            SplitParent(node.parent, temp[d], newSib, v);
         }
     }
 
 
-    public void SplitRoot(Node node, int key) {
+    public void SplitRoot(Node node, int key, String value) {
         nodeNumber++;
         Node newR = new Node(d, nodeNumber, null);
         newR.setNumber(1);
@@ -448,6 +556,7 @@ public class BTree implements Serializable{
             newSib.key[i] = temp[d+i+1];
         }
         newR.key[0] = temp[d];
+        reorganizeFiles(newR, newSib, node, value, key);
     }
 
 
@@ -492,7 +601,7 @@ public class BTree implements Serializable{
                     node.child[cIndex-1].key[i] = temp[j-1];
                     j--;
                 }
-                //reorganizeFiles(node, node.child[cIndex-1], node.child[cIndex], value, key);
+                reorganizeFiles(node, node.child[cIndex-1], node.child[cIndex], value, key);
                 return 1;
             }
             else{}
@@ -535,7 +644,7 @@ public class BTree implements Serializable{
                     node.child[cIndex].key[i] = temp[j-1];
                     j--;
                 }
-//                reorganizeFiles(node, node.child[cIndex], node.child[cIndex+1], value, key);
+                reorganizeFiles(node, node.child[cIndex], node.child[cIndex+1], value, key);
                 return 1;
             }
             else{}
@@ -555,7 +664,7 @@ public class BTree implements Serializable{
             return;
         }
         if(r.getNumber() == 2*d && r.getIsLeaf() == true)
-            SplitRoot(r, key);
+            SplitRoot(r, key, v);
         //if(r.getNumber() == 2*d) {
 
             /*
@@ -583,8 +692,7 @@ public class BTree implements Serializable{
             return;
         }
         if(r.getIsLeaf() == true) {
-     //       for (int i = 0; i < r.getNumber(); i++)
-    //            if(key == r.key[i])
+
 
         }
     }
@@ -614,7 +722,7 @@ public class BTree implements Serializable{
             if(tmp.getIsLeaf() == true && tmp.getNumber() == 2 * d) {
                 comp = Compensate(node, i, k, v);
                 if (comp == 0)
-                    Split2(tmp, k);
+                    Split2(tmp, k, v);
             }
             else
                 insertValue(node.child[i], k, v);
@@ -626,7 +734,7 @@ public class BTree implements Serializable{
             }
             node.key[i+1] = k;
             node.setNumber(node.getNumber()+1);
-            //insertIntoFile(k, v, node.getFileName());
+            insertIntoFile(k, v, node.getFileName());
         } /*else if (node.getIsLeaf() == true && node.getNumber() >= 2*d) {
 
         }

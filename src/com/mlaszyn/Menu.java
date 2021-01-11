@@ -67,47 +67,75 @@ public class Menu {
 
     public void testing() {
         BTree b = new BTree(2, 100);
-        /*
+
         b.Insert(8, "asdsfalksfhsohaggudhguanvjmnso");
         b.Show();
-        b.Insert(9, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(9, "ldsugh9ushugodsgninfdb");
         b.Show();
-        b.Insert(10, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(10, "pwoqihjtouhrerwniuqfngvuinv");
         b.Show();
-        b.Insert(11, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(11, "tqyufhbdhxvnojnivbmisdgv");
         b.Show();
-        b.Insert(15, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(15, "qwretyreiuyijptrkhocxvds");
         b.Show();
-        b.Insert(4, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(76, "asdgdshahafjj");
         b.Show();
-        b.Insert(31, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(26, "foienrjgnjhbnhb ");
         b.Show();
-        b.Insert(7, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(98, "oiewhtunreingugvrfeg");
         b.Show();
-        b.Insert(23, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(16, "fdsonbjdfbnjsnjbnm");
         b.Show();
-        b.Insert(13, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(30, "sihgnfidsnvjnjdfbbf");
         b.Show();
-        b.Insert(22, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(28, "AAKSDHBGHBAJGBHKA");
         b.Show();
-        b.Insert(12, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(19, "AGJJFDONBIOMNBEWKLTNWOE");
         b.Show();
-        b.Insert(20, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(45, "POJRWOUIENGIUIERGBER");
         b.Show();
-        b.Insert(17, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(17, "NHUIEWBYHFBHIWENGOJNOPWM");
         b.Show();
-        b.Insert(14, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(14, "PAOEJIONUJNGBNRFGBYDGSBYUYEWBEY");
         b.Show();
-        b.Insert(13, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(13, "yeghtwbhgbnjnrfgbmkrd");
         b.Show();
-        b.Insert(18, "asdsfalksfhsohaggudhguanvjmnso");
+        b.Insert(18, "jkBKBHJBHJVBJbjnklnlkm");
+        b.Show();
+
+        b.Insert(4, "jnjbnsjabfubaisbubnONAAAA");
+        b.Show();
+        b.Insert(31, "AAAAAAAAAAAAAAAAAAAAAAAAA");
+        b.Show();
+        b.Insert(7, "BBBBBBBBBBBBBBBBBBBBBB");
+        b.Show();
+        b.Insert(23, "cccccccccccccccccc");
+        b.Show();
+        b.Insert(13, "dddddddddddddddddddddd");
+        b.Show();
+        b.Insert(22, "eeeeeeeeeeeeeeeeeeeeeee");
+        b.Show();
+        b.Insert(12, "rrrrrrrrrrrrrrrrrrrrrrrrrrr");
+        b.Show();
+        b.Insert(20, "tttttttttttttttttttttttt");
+        b.Show();
+        b.Insert(82, "yyyyyyyyyyyyyyyyyyyyyyy");
+        b.Show();
+        b.Insert(55, "uuuuuuuuuuuuuuuuuuuu");
+        b.Show();
+        b.Insert(39, "nnnnnnnnnnnnnnnnnnnnnnn");
+        b.Show();
+        b.Insert(69, "bbbbbbbbbbbbbbbb");
 
         b.Show();
 
+
+
+/*
         b.UpdateValue(13, "pouiyuyuhkdsgbhjsbghkasnu");
 
         b.Show();
-*/
+/*
         Random rand = new Random(); //instance of random class
         int upperbound = 1000;
         for (int i = 0; i < 200; i ++) {
@@ -116,6 +144,9 @@ public class Menu {
             b.Show();
         }
         b.Show();
+
+        */
+
 /*
         try {
             FileOutputStream f = new FileOutputStream(new File("BTree3.txt"));
