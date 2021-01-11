@@ -110,7 +110,7 @@ public class Menu {
 */
         Random rand = new Random(); //instance of random class
         int upperbound = 1000;
-        for (int i = 0; i < 50; i ++) {
+        for (int i = 0; i < 200; i ++) {
             int int_random = rand.nextInt(upperbound);
             b.Insert(int_random, "asdsfalksfhsohaggudhguanvjmnso");
             b.Show();

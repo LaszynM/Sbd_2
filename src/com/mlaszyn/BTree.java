@@ -326,10 +326,10 @@ public class BTree implements Serializable{
                     node.key[j] = node.key[j-1];
                     node.child[j+1] = node.child[j];
                 }
-                node.key[j] = key;
-                node.setNumber(node.getNumber()+1);
-                node.child[j+1] = newChild;
             }
+            node.key[j] = key;
+            node.setNumber(node.getNumber()+1);
+            node.child[j+1] = newChild;
         } else if (node.parent == null) {
             //nowy root
             nodeNumber++;
@@ -343,6 +343,7 @@ public class BTree implements Serializable{
             nodeNumber++;
             Node newSib = new Node(d, nodeNumber, newR);
             newR.child[1] = newSib;
+            newSib.setLeaf(false);
 
             int temp[] = new int[2*d+1];
             Node tempNode[] = new Node[2*d+2];
@@ -370,6 +371,7 @@ public class BTree implements Serializable{
             for (int i = 0; i <=d; i++) {
                 node.child[i] = tempNode[i];
                 newSib.child[i] = tempNode[i+d+1];
+                newSib.child[i].parent = newSib;
             }
             newSib.setLeaf(false);
             node.setNumber(d);
@@ -404,6 +406,7 @@ public class BTree implements Serializable{
             for (int i = 0; i <=d; i++) {
                 node.child[i] = tempNode[i];
                 newSib.child[i] = tempNode[i+d+1];
+                newSib.child[i].parent = newSib;
             }
             newSib.setLeaf(false);
             node.setNumber(d);
@@ -494,7 +497,7 @@ public class BTree implements Serializable{
             }
             else{}
         }
-        if (cIndex < 2*d+1) {
+        if (cIndex < 2*d) {
             if (node.child[cIndex+1] != null && node.child[cIndex+1].getNumber() < 2*d) {
                 int temp[] = new int[4 * d + 1];
                 int j = 0, k = 0;
@@ -532,7 +535,7 @@ public class BTree implements Serializable{
                     node.child[cIndex].key[i] = temp[j-1];
                     j--;
                 }
-                reorganizeFiles(node, node.child[cIndex], node.child[cIndex+1], value, key);
+//                reorganizeFiles(node, node.child[cIndex], node.child[cIndex+1], value, key);
                 return 1;
             }
             else{}
@@ -601,7 +604,22 @@ public class BTree implements Serializable{
     }
 
     private final void insertValue(Node node, int k, String v) {
-        if(node.getNumber() < 2*d && node.getIsLeaf() == true) {
+        if(node.getIsLeaf() == false) {
+            int i = 0;
+            for (i = node.getNumber() - 1; i >= 0 && k < node.key[i]; i--) {
+            }
+            i++;
+            Node tmp = node.child[i];
+            int comp = 0;
+            if(tmp.getIsLeaf() == true && tmp.getNumber() == 2 * d) {
+                comp = Compensate(node, i, k, v);
+                if (comp == 0)
+                    Split2(tmp, k);
+            }
+            else
+                insertValue(node.child[i], k, v);
+        }
+        else if(node.getIsLeaf() == true) {
             int i = 0;
             for (i = node.getNumber() - 1; i >= 0 && k < node.key[i]; i--) {
                 node.key[i+1] = node.key[i];
@@ -609,7 +627,7 @@ public class BTree implements Serializable{
             node.key[i+1] = k;
             node.setNumber(node.getNumber()+1);
             //insertIntoFile(k, v, node.getFileName());
-        } else if (node.getIsLeaf() == true) {
+        } /*else if (node.getIsLeaf() == true && node.getNumber() >= 2*d) {
 
         }
 
@@ -631,7 +649,7 @@ public class BTree implements Serializable{
             }
             else
                 insertValue(node.child[i], k, v);
-        }
+        }*/
 
     }
 
@@ -645,9 +663,12 @@ public class BTree implements Serializable{
     public void ShowNode(Node node, int c) {
         assert (node == null);
 
+        if(node.parent != null)
+            System.out.println("Parent: "+node.parent.getFileName());
         System.out.println("Node file: "+node.getFileName());
         for(int i = 0; i < node.getNumber(); i++) {
-            System.out.print("Key: " + node.key[i] + " " + "Value:" + readValue(node.key[i], node.getFileName()) +   "\n");
+            System.out.print("Key: " + node.key[i] + " \n");
+        //+ "Value:" + readValue(node.key[i], node.getFileName()) +   "\n");
         }
         System.out.println("Height from root:"+c);
         if (node.getIsLeaf() != true) {
