@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Menu {
     public Menu(){}
+
     public void startMenu() {
         while(true) {
             System.out.println("Menu");
@@ -90,6 +91,8 @@ public class Menu {
         b.Show();
         b.Insert(28, "AAKSDHBGHBAJGBHKA");
         b.Show();
+        b.DeleteValue(10);
+        b.Show();
         b.Insert(19, "AGJJFDONBIOMNBEWKLTNWOE");
         b.Show();
         b.Insert(45, "POJRWOUIENGIUIERGBER");
@@ -131,21 +134,26 @@ public class Menu {
 
 
 
+
+
 /*
         b.UpdateValue(13, "pouiyuyuhkdsgbhjsbghkasnu");
 
         b.Show();
-/*
+
         Random rand = new Random(); //instance of random class
-        int upperbound = 1000;
-        for (int i = 0; i < 200; i ++) {
+        int upperbound = 30000;
+        for (int i = 0; i < 20; i ++) {
             int int_random = rand.nextInt(upperbound);
             b.Insert(int_random, "asdsfalksfhsohaggudhguanvjmnso");
             b.Show();
         }
-        b.Show();
-
         */
+        b.Show();
+        System.out.println("Write all: "+b.writee);
+        System.out.println("Read all: "+b.readd);
+
+
 
 /*
         try {
@@ -203,6 +211,7 @@ public class Menu {
                     b.Show();
                 }
                 else if (name.equals("5")) {
+                    saveTree(b, tName);
                     return;
                 }
                 else
@@ -253,6 +262,7 @@ public class Menu {
                     b.Show();
                 }
                 else if (name.equals("5")) {
+                    saveTree(b, tName);
                     return;
                 }
                 else
