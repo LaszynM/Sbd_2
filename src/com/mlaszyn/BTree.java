@@ -1281,8 +1281,8 @@ public class BTree implements Serializable{
 
         ShowNode(root, 1);
         bufferedNodes = 1;
-        System.out.println("Last operation read count: "+ readd);
-        System.out.println("Last operation write count: "+ writee);
+        //System.out.println("Last operation read count: "+ readd);
+        //System.out.println("Last operation write count: "+ writee);
         //readd = readd+readCount;
         //writee = writee + writeCount;
         System.out.println("|------------------------------------------|");

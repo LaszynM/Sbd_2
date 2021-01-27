@@ -3,6 +3,7 @@ package com.mlaszyn;
 import java.io.*;
 import java.util.Random;
 
+
 public class Menu {
     public Menu(){}
 
@@ -239,6 +240,16 @@ public class Menu {
     }
 
     public void startTreeFromScratch() {
+        try {
+            FileWriter fw = new FileWriter("BTree.bin",false);
+            FileWriter fw2 = new FileWriter("Values.bin",false);
+            fw.write("");
+            fw2.write("");
+            fw.close();
+            fw2.close();
+        } catch(IOException io) {
+            System.out.println("Ioioioioiooioioi");
+        }
 
         //String tName = "BTree.txt";
         while(true) {
