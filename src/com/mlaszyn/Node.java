@@ -4,42 +4,40 @@ import java.io.IOException;
 import java.io.Serializable;
 
 public class Node implements Serializable {
-    private int d;
     private int number;
-    private String fileName;
     private boolean isLeaf;
     int size;
+    private int nodeId;
     int key[];
-    Node child[];
-    Node parent;
+    //Node child[];
+    //Node parent;
+    int childOffset[];
+    private int parentOffset;
+    int valuesOffset[];
 
 
-    public Node(int d, int id, Node parent) {
-        fileName = "Node"+id+".txt";
-        try {
-            File old = new File(fileName);
-            old.delete();
-            File file = new File(fileName);
-            file.createNewFile();
-        } catch (IOException io) {
-            System.out.println("Error creating node file");
-        }
-        this.d = d;
+    public Node(int d, int id, int parentOffset) {
+
         size = 2*d;
         key = new int[size];
-        child = new Node[2*d+1];
+        //child = new Node[2*d+1];
+        childOffset = new int[2*d+1];
         isLeaf = true;
-        this.parent = parent;
+        nodeId = id;
+        this.parentOffset = parentOffset;
+        //this.parent = parent;
+        valuesOffset = new int[2*d];
     }
 
     public int getNumber() { return(number); }
-    public String getFileName() { return(fileName); }
+    public int getNodeId() { return(nodeId); }
     public boolean getIsLeaf() { return(isLeaf); }
+    public int getParentOffset() { return(parentOffset); }
 
-    public void setD(int d) { this.d = d; }
     public void setNumber(int number) { this.number = number; }
-    //public void setValue(String value) { this.value = value; }
+    public void setParentOffset(int offs) { this.parentOffset = offs; }
     public void setLeaf(boolean isLeaf) { this.isLeaf = isLeaf; }
+    public void setNodeId(int number) { this.nodeId = number; }
 
 
     public int FindKey(int k) {

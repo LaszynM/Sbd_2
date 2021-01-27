@@ -9,5 +9,7 @@ public class Main {
         Menu menu = new Menu();
         //menu.startMenu();
         menu.testing();
+        //Node node = new Node(2, 0, null);
+
     }
 }

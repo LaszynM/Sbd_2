@@ -66,90 +66,105 @@ public class Menu {
         return null;
     }
 
+    public void Insertt(int key, String value) {
+        BTree b = new BTree(2, 0);
+
+        //b.UpdateValue(15, "pppppppppppppppppp");
+        b.Insert(key, value);
+    }
+
     public void testing() {
-        BTree b = new BTree(2, 100);
+       /* BTree b = new BTree(2, 0);
 
+        //b.UpdateValue(15, "pppppppppppppppppp");
         b.Insert(8, "asdsfalksfhsohaggudhguanvjmnso");
-        b.Show();
+        //b.Show();
         b.Insert(9, "ldsugh9ushugodsgninfdb");
-        b.Show();
+        //b.Show();
         b.Insert(10, "pwoqihjtouhrerwniuqfngvuinv");
-        b.Show();
+        //b.Show();
         b.Insert(11, "tqyufhbdhxvnojnivbmisdgv");
-        b.Show();
+        //b.Show();
         b.Insert(15, "qwretyreiuyijptrkhocxvds");
-        b.Show();
-        b.Insert(76, "asdgdshahafjj");
-        b.Show();
-        b.Insert(26, "foienrjgnjhbnhb ");
-        b.Show();
-        b.Insert(98, "oiewhtunreingugvrfeg");
-        b.Show();
-        b.Insert(16, "fdsonbjdfbnjsnjbnm");
-        b.Show();
-        b.Insert(30, "sihgnfidsnvjnjdfbbf");
-        b.Show();
-        b.Insert(28, "AAKSDHBGHBAJGBHKA");
-        b.Show();
-        b.DeleteValue(10);
-        b.Show();
-        b.Insert(19, "AGJJFDONBIOMNBEWKLTNWOE");
-        b.Show();
-        b.Insert(45, "POJRWOUIENGIUIERGBER");
-        b.Show();
-        b.Insert(17, "NHUIEWBYHFBHIWENGOJNOPWM");
-        b.Show();
-        b.Insert(14, "PAOEJIONUJNGBNRFGBYDGSBYUYEWBEY");
-        b.Show();
-        b.Insert(13, "yeghtwbhgbnjnrfgbmkrd");
-        b.Show();
-        b.Insert(18, "jkBKBHJBHJVBJbjnklnlkm");
-        b.Show();
+        //b.Show();
 
+        b.Insert(76, "asdgdshahafjj");
+        //b.Show();
+        b.Insert(26, "foienrjgnjhbnhb ");
+        //b.Show();
+        b.Insert(98, "oiewhtunreingugvrfeg");
+        //b.Show();
+        b.Insert(16, "fdsonbjdfbnjsnjbnm");
+        //b.Show();
+        b.Insert(30, "sihgnfidsnvjnjdfbbf");
+        //b.Show();
+
+        b.Insert(28, "AAKSDHBGHBAJGBHKA");
+        //b.Show();
+        b.Insert(19, "AGJJFDONBIOMNBEWKLTNWOE");
+        //b.Show();
+        b.Insert(45, "POJRWOUIENGIUIERGBER");
+        //b.Show();
+        b.Insert(17, "NHUIEWBYHFBHIWENGOJNOPWM");
+        //b.Show();
+        b.Insert(14, "PAOEJIONUJNGBNRFGBYDGSBYUYEWBEY");
+        //b.Show();
+
+        b.Insert(13, "yeghtwbhgbnjnrfgbmkrd");
+        //b.Show();
+        b.Insert(18, "jkBKBHJBHJVBJbjnklnlkm");
+        //b.Show();
         b.Insert(4, "jnjbnsjabfubaisbubnONAAAA");
-        b.Show();
+        //b.Show();
         b.Insert(31, "AAAAAAAAAAAAAAAAAAAAAAAAA");
-        b.Show();
+       //b.Show();
         b.Insert(7, "BBBBBBBBBBBBBBBBBBBBBB");
-        b.Show();
+
+        //b.Show();
         b.Insert(23, "cccccccccccccccccc");
-        b.Show();
+        //b.Show();
         b.Insert(13, "dddddddddddddddddddddd");
-        b.Show();
+        //b.Show();
         b.Insert(22, "eeeeeeeeeeeeeeeeeeeeeee");
-        b.Show();
+        //b.Show();
         b.Insert(12, "rrrrrrrrrrrrrrrrrrrrrrrrrrr");
-        b.Show();
+        //b.Show();
         b.Insert(20, "tttttttttttttttttttttttt");
-        b.Show();
+        //b.Show();
+
         b.Insert(82, "yyyyyyyyyyyyyyyyyyyyyyy");
-        b.Show();
+        //b.Show();
         b.Insert(55, "uuuuuuuuuuuuuuuuuuuu");
-        b.Show();
+        //b.Show();
         b.Insert(39, "nnnnnnnnnnnnnnnnnnnnnnn");
-        b.Show();
+       // b.Show();
         b.Insert(69, "bbbbbbbbbbbbbbbb");
 
-        b.Show();
+        BTree bt = new BTree(2, 0);
+        bt.Show();
+
+        //b.Show();
+        saveTree(b, "Btreee.txt");
 
 
 
-
-
-/*
         b.UpdateValue(13, "pouiyuyuhkdsgbhjsbghkasnu");
 
         b.Show();
-
+*/
         Random rand = new Random(); //instance of random class
-        int upperbound = 30000;
-        for (int i = 0; i < 20; i ++) {
+
+        int upperbound = 9000;
+        for (int i = 0; i < 80; i ++) {
             int int_random = rand.nextInt(upperbound);
-            b.Insert(int_random, "asdsfalksfhsohaggudhguanvjmnso");
-            b.Show();
+            Insertt(int_random, "asdsfalksfhsohaggudhguanvjmnso");
+
         }
-        */
+        BTree b = new BTree(2, 0);
         b.Show();
+        //b.UpdateValue(15, "pppppppppppppppppp");
+        //b.Insert(8, "asdsfalksfhsohaggudhguanvjmnso");
+        //b.Show();
         System.out.println("Write all: "+b.writee);
         System.out.println("Read all: "+b.readd);
 
@@ -172,8 +187,7 @@ public class Menu {
     }
 
     public void readTreeFromFile() {
-        String tName = "BTree2.txt";
-        BTree b = readTree(tName);
+        //String tName = "BTree2.txt";
 
         while(true) {
             System.out.println("Read tree from file");
@@ -192,9 +206,9 @@ public class Menu {
                     int key = Integer.parseInt(keyy);
                     System.out.println("Please enter value:");
                     String val = reader.readLine();
-
+                    BTree b = new BTree(2, 0);
                     b.Insert(key, val);
-                    saveTree(b, tName);
+                    //saveTree(b, tName);
 
                 } else if (name.equals("2")) {
                     System.out.println("Please enter key:");
@@ -202,16 +216,18 @@ public class Menu {
                     int key = Integer.parseInt(keyy);
                     System.out.println("Please enter value:");
                     String val = reader.readLine();
+                    BTree b = new BTree(2, 0);
                     b.UpdateValue(key, val);
                 }
                 else if (name.equals("3")) {
                     System.out.println("Work in progress");
                 }
                 else if (name.equals("4")) {
-                    b.Show();
+                    BTree bt = new BTree(2, 0);
+                    bt.Show();
                 }
                 else if (name.equals("5")) {
-                    saveTree(b, tName);
+                    //saveTree(b, tName);
                     return;
                 }
                 else
@@ -223,8 +239,8 @@ public class Menu {
     }
 
     public void startTreeFromScratch() {
-        BTree b = new BTree(2, 0);
-        String tName = "BTree.txt";
+
+        //String tName = "BTree.txt";
         while(true) {
             System.out.println("Read tree from file");
             System.out.println("Choose option:");
@@ -242,9 +258,9 @@ public class Menu {
                     int key = Integer.parseInt(keyy);
                     System.out.println("Please enter value:");
                     String val = reader.readLine();
-
+                    BTree b = new BTree(2, 0);
                     b.Insert(key, val);
-                    saveTree(b, tName);
+                    //saveTree(b, tName);
 
                 } else if (name.equals("2")) {
                     System.out.println("Please enter key:");
@@ -252,17 +268,19 @@ public class Menu {
                     int key = Integer.parseInt(keyy);
                     System.out.println("Please enter value:");
                     String val = reader.readLine();
-
+                    BTree b = new BTree(2, 0);
                     b.UpdateValue(key, val);
                 }
                 else if (name.equals("3")) {
                     System.out.println("Work in progress");
                 }
                 else if (name.equals("4")) {
-                    b.Show();
+                    BTree bt = new BTree(2, 0);
+                    bt.Show();
+                    //b.Show();
                 }
                 else if (name.equals("5")) {
-                    saveTree(b, tName);
+                    //saveTree(b, tName);
                     return;
                 }
                 else
