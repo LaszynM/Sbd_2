@@ -156,10 +156,11 @@ public class Menu {
         Random rand = new Random(); //instance of random class
 
         int upperbound = 9000;
-        for (int i = 0; i < 80; i ++) {
+        for (int i = 0; i < 30; i ++) {
             int int_random = rand.nextInt(upperbound);
             Insertt(int_random, "asdsfalksfhsohaggudhguanvjmnso");
-
+            BTree b = new BTree(2, 0);
+            b.Show();
         }
         BTree b = new BTree(2, 0);
         b.Show();
